@@ -23,7 +23,7 @@ colors = ['red',  'blue',   'green',
 def create_nodes(n): #cria n vertices com cores aleatorias
     nodes = []
     for i in range(n):
-        nodes.append(node(n ,colors[random.randint(0, len(colors)-1)]))
+        nodes.append(node(i ,colors[random.randint(0, len(colors)-1)]))
     return nodes
 
 nodes = create_nodes(12)

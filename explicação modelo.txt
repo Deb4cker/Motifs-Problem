@@ -1,0 +1,29 @@
+variaveis:
+
+Xv -> vertice de um lado (v) 
+Xu -> Vertice de outro lado (u)
+Yuv {
+	y = aresta
+} -> aresta que liga de u ate v 
+
+funcçõa objetivo
+
+minimiza: Somatorio de todos vertices do subgrafo(Xv) - O somatorio de todas as arestas selecionadas neste subgrafo(Yuv)
+ 
+sujeito a:
+
+	1- O somatorio do de todos os vertices do motif pertencentes a uma cor deve ser igual à quantidade de vezes que a cor aparece no motif
+
+	2 - A quantidade de aresta deve ser maior ou igual a quantidade do verrtice que liga: explciação: {
+		Yuv Aresta existe (1) ou não existe (0);
+		Xu existe (1) ou não existe (0)
+		
+		Sendo assim, Yuv <= Xv
+		se Xu não estiver ligado, obrigatoriamente Yuv nao existira
+		se Xu existir, ele pode ou nao ter Yuv		 
+	}
+
+	3 - mesma coisa que anterior mas para Xv
+
+	4 - Xv pertence a {0 , 1} (Xv existe ou não existe.)
+	4 - Yuv pertence a {0 , 1} (yuv existe ou não existe.)

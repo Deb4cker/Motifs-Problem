@@ -1,8 +1,5 @@
 from pyomo.environ import *
 import random
-import classes
-
-numeros = classes.numeros
 
 class node: #vertice tem um id (numero) e uma cor (string)
     def __init__(self, id, color):
@@ -39,9 +36,6 @@ def create_nodes(n): #cria n vertices com cores aleatorias
 
 nodes = create_nodes(12) #cria 12 vertices
 
-for n in nodes:
-    print(n)
-
 def create_edges(n): #cria arestas aleatorias
     edges = []
     for i in range(n):
@@ -49,6 +43,11 @@ def create_edges(n): #cria arestas aleatorias
     return edges   
 
 edges = create_edges(12) #cria 12 arestas
+
+for n in nodes:
+    print(n)
+
+print("\ngrafo:")
 
 for e in edges:
     print(e)

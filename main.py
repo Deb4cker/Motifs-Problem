@@ -13,7 +13,9 @@ class node: #vertice tem um id (numero) e uma cor (string)
         return f"[{self.id} {self.color}]"
 
 class edge: #aresta tem um vertice de origem (u) e um de destino (v
-    def __init__(self, u, v):
+    def __init__(self, u, cost, v):
+        self.cost = cost
+
         self.u = u
         u.edges.append(self)
         self.v = v
@@ -58,16 +60,19 @@ def print_graph(graph):
         print(e)
 
 #---------------------main----------------------#
-
 nodes = create_nodes(instances.total_vertices) #cria vertices do tamanho indicado nas instancias
 edges = create_edges(instances.total_vertices) #cria n arestas
 theGraph = graph(nodes, edges) #cria o grafo
 
-print_graph(theGraph) #printa o grafo
+node(0, 'red')
+node(1, 'blue')
+node(2, 'green')
+
+# print_graph(theGraph) #printa o grafo
 #---------------------pyomo----------------------#
 
-model = ConcreteModel()
+# model = ConcreteModel()
 
-model.x = Var(nodes, domain=Binary)
-model.y = Var(edges, domain=Binary)
-model.obj = Objective(expr=sum(model.x[n] for n in nodes) - sum(model.y[uv] for uv in edges), sense=minimize)
+# model.x = Var(nodes, domain=Binary)
+# model.y = Var(edges, domain=Binary)
+# model.obj = Objective(expr=sum(model.x[n] for n in nodes) - sum(model.y[uv] for uv in edges), sense=minimize)

@@ -47,13 +47,14 @@ def create_edges(n): #cria arestas aleatorias
 
 nodes = create_nodes(12) #cria 12 vertices
 edges = create_edges(12) #cria 12 arestas
+theGraph = graph(nodes, edges) #cria o grafo
 
 print("vertices:")
-for n in nodes:
+for n in theGraph.nodes:
     print(n)
 
 print("\ngrafo:")
-for e in edges:
+for e in theGraph.edges:
     print(e)
 
 #---------------------pyomo----------------------#

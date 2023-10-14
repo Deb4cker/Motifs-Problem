@@ -4,7 +4,7 @@ import random
 
 
 # 1- numero TOTAL de vertices do grafo;
-graph_lenght = 12 #add a graph lenght here;
+total_vertices = 12 #add a graph lenght here;
 
 # 2- numero de cores;
 def generate_colors(total):
@@ -15,6 +15,7 @@ def generate_colors(total):
             colors.append(color)
     return colors
 
+colors = generate_colors(269) #cria uma lista de cores aleatorias
 # 3- numero de vertices com cores repetidas;
 
 

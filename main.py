@@ -1,5 +1,6 @@
 from pyomo.environ import *
 import random
+import instances
 
 #---------------------classes---------------------#
 
@@ -29,10 +30,12 @@ class graph: #grafo tem um conjunto de vertices e um conjunto de arestas
 
 #---------------------methods----------------------#
 
-colors = ['red',  'blue',   'green',
+colors = instances.colors #cria uma lista de cores aleatorias
+'''
+        ['red',  'blue',   'green',
         'yellow', 'orange', 'purple',
         'pink',   'black',  'white',  
-        'brown',  'gray',   'cyan'] #cores possiveis
+        'brown',  'gray',   'cyan'] '''#cores possiveis
 
 def create_nodes(n): #cria n vertices com cores aleatorias
     nodes = []
@@ -56,8 +59,8 @@ def print_graph(graph):
 
 #---------------------main----------------------#
 
-nodes = create_nodes(12) #cria 12 vertices
-edges = create_edges(12) #cria 12 arestas
+nodes = create_nodes(instances.total_vertices) #cria vertices do tamanho indicado nas instancias
+edges = create_edges(instances.total_vertices) #cria n arestas
 theGraph = graph(nodes, edges) #cria o grafo
 
 print_graph(theGraph) #printa o grafo

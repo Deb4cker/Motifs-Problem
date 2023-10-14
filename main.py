@@ -65,8 +65,9 @@ theGraph = graph(nodes, edges) #cria o grafo
 
 print_graph(theGraph) #printa o grafo
 #---------------------pyomo----------------------#
-    
-#model:
 
-# model = ConcreteModel()
-# model.obj = Objective(expr = 1, sense=minimize)
+model = ConcreteModel()
+
+model.x = Var(nodes, domain=Binary)
+model.y = Var(edges, domain=Binary)
+model.obj = Objective(expr=sum(model.x[n] for n in nodes) - sum(model.y[uv] for uv in edges), sense=minimize)

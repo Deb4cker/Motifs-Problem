@@ -1,71 +1,48 @@
-from pyomo.environ import *
-import csv
-import numpy as np  
-
-# #---------------------classes---------------------#
-
-class vertice:
-    vertices = {}
-
-    def __init__(self, color):
-        self.name = color
-        self.edges = []
-
-        if color not in vertice.vertices:
-            vertice.vertices[color] = self
-
-    def __str__(self):
-        return f"[{self.name}]"
-
-class edge: #aresta tem um vertice de origem (u) e um de destino (v
-    def __init__(self, u, cost, v):
-        self.cost = cost
-
-        self.u = u
-        u.edges.append(self)
-        self.v = v
-        v.edges.append(self)
-    def __str__(self):
-        return f"{self.u} >--{self.cost}--< {self.v}"
-
+from pyomo.environ import * 
+import instances
 #---------------------main----------------------#
+selection = input("Choose instances: \nDrosophila melanogaster [1] \nHomo sapiens [2] \nSaccharomyces cerevisiae [3] \n")
 
-V = []
-E = []
-with open('sc.csv', newline='', encoding='utf-8') as f:
-    reader = csv.reader(f)
+if selection == '1':
+    table = "dm.csv"
+elif selection == '2':
+    table = "hs.csv"
+elif selection == '3':
+    table = "sc.csv"
+else:
+    print("Invalid selection.")
+    exit()
 
-    first_column = []
-    third_column = []
-    for row in reader:
-        u, cost, v = row
-        if u not in vertice.vertices:
-            V.append(vertice(u))
-            vertice(u)
+instances.generateGraph(table)
 
-        if v not in vertice.vertices:
-            V.append(vertice(v))
-            vertice(v)
-
-        E.append(edge(vertice.vertices[u], cost, vertice.vertices[v]))
-        first_column.append(row[0])
-        third_column.append(row[2])
-
-    V = set(first_column + third_column)
-    V = np.array(list(V))
-
-print(f"{V.__len__()} \n ------------------------------ \n");
-for v in V:
+for v in instances.V:
     print(v)
 
-print(f"{E.__len__()} \n ------------------------------ \n");
-for e in E:
-    print(e)
-
+print(instances.I_V_I)
 #---------------------pyomo----------------------#
+
+# V = instances.V
+# E = instances.E
+# C = instances.C
+# m = instances.m
 
 # model = ConcreteModel()
 
-# model.x = Var(nodes, domain=Binary)
-# model.y = Var(edges, domain=Binary)
-# model.obj = Objective(expr=sum(model.x[n] for n in nodes) - sum(model.y[uv] for uv in edges), sense=minimize)
+# model.x = Var(V, domain=Binary)
+# model.y = Var(E, domain=Binary)
+# model.obj = Objective(expr=sum(model.x[n] for n in V) - sum(model.y[uv] for uv in E), sense=minimize)
+
+# model.con1 = Constraint(expr=sum(model.x[v] for v in V) == sum(m[c] for c in C for v in V if c == instances.I_V_I[v]))
+# model.con2 = Constraint(E, rule=lambda model, uv: model.y[uv] <= model.x[uv[0]])
+# model.con3 = Constraint(E, rule=lambda model, uv: model.y[uv] <= model.x[uv[1]])
+# model.con4 = Constraint(V, rule=lambda model, v: 0 <= model.x[v] <= 1)
+# model.con5 = Constraint(E, rule=lambda model, uv: 0 <= model.y[uv] <= 1)
+
+# solver = SolverFactory('glpk')
+# results = solver.solve(model)
+
+# print('Status:', results.solver.status)
+# print('Termination criterion:', results.solver.termination_condition)
+# if results.solver.termination_condition == 'optimal':
+#     print('Optimal solution cost:', model.obj.expr())
+#     print('Optimal solution is x1 =', model.x[1].value, 'and x2 =', model.x[2].value)

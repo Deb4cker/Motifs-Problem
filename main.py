@@ -1,16 +1,21 @@
 from pyomo.environ import *
-import random
-import instances
+import csv
+import numpy as np  
 
-#---------------------classes---------------------#
+# #---------------------classes---------------------#
 
-class node: #vertice tem um id (numero) e uma cor (string)
-    edges = []
-    def __init__(self, id, color):
-        self.id = id
-        self.color = color
+class vertice:
+    vertices = {}
+
+    def __init__(self, color):
+        self.name = color
+        self.edges = []
+
+        if color not in vertice.vertices:
+            vertice.vertices[color] = self
+
     def __str__(self):
-        return f"[{self.id} {self.color}]"
+        return f"[{self.name}]"
 
 class edge: #aresta tem um vertice de origem (u) e um de destino (v
     def __init__(self, u, cost, v):
@@ -21,72 +26,42 @@ class edge: #aresta tem um vertice de origem (u) e um de destino (v
         self.v = v
         v.edges.append(self)
     def __str__(self):
-        return f"{self.u} <----> {self.v}"
-
-class graph: #grafo tem um conjunto de vertices e um conjunto de arestas
-    def __init__(self, nodes, edges):
-        self.nodes = nodes
-        self.edges = edges
-    def __str__(self):
-        return f"{self.nodes} {self.edges}"
-
-#---------------------methods----------------------#
-
-colors = instances.colors #cria uma lista de cores aleatorias
-'''
-        ['red',  'blue',   'green',
-        'yellow', 'orange', 'purple',
-        'pink',   'black',  'white',  
-        'brown',  'gray',   'cyan'] '''#cores possiveis
-
-def create_nodes(n): #cria n vertices com cores aleatorias
-    nodes = []
-    for i in range(n):
-        nodes.append(node(i ,colors[random.randint(0, len(colors)-1)]))
-    return nodes
-
-def create_edges(n): #cria arestas aleatorias
-    edges = []
-    for i in range(n):
-        edges.append(edge(nodes[random.randint(0, len(nodes)-1)], nodes[random.randint(0, len(nodes)-1)]))
-    return edges   
-
-def print_graph(graph):
-    print("vertices:")
-    for n in graph.nodes:
-        print(n)
-    print("\ngrafo:")
-    for e in graph.edges:
-        print(e)
+        return f"{self.u} >--{self.cost}--< {self.v}"
 
 #---------------------main----------------------#
-nodes = create_nodes(instances.total_vertices) #cria vertices do tamanho indicado nas instancias
-edges = create_edges(instances.total_vertices) #cria n arestas
-theGraph = graph(nodes, edges) #cria o grafo
 
-print("vertices:")
-for n in theGraph.nodes:
-    print(n)
+V = []
+E = []
+with open('sc.csv', newline='', encoding='utf-8') as f:
+    reader = csv.reader(f)
 
-print("\ngrafo:")
-for e in theGraph.edges:
+    first_column = []
+    third_column = []
+    for row in reader:
+        u, cost, v = row
+        if u not in vertice.vertices:
+            V.append(vertice(u))
+            vertice(u)
+
+        if v not in vertice.vertices:
+            V.append(vertice(v))
+            vertice(v)
+
+        E.append(edge(vertice.vertices[u], cost, vertice.vertices[v]))
+        first_column.append(row[0])
+        third_column.append(row[2])
+
+    V = set(first_column + third_column)
+    V = np.array(list(V))
+
+print(f"{V.__len__()} \n ------------------------------ \n");
+for v in V:
+    print(v)
+
+print(f"{E.__len__()} \n ------------------------------ \n");
+for e in E:
     print(e)
 
-print_graph(theGraph) #printa o grafo
-
-import csv
-matrix = []
-with open('dm.csv', newline='', encoding='utf-8') as f:
-    reader = csv.reader(f)
-    for row in reader:
-        a = ['a'] * 3
-        for key, j in enumerate(row):
-            a[key] = j
-            
-        matrix.append(a)
-        
-print(matrix)
-            
 #---------------------pyomo----------------------#
 
 # model = ConcreteModel()

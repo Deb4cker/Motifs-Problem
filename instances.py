@@ -47,6 +47,17 @@ I_M_I = ...
 # 5 - quantas cores tem no motif.
 I_CM_I = ...
 
+#----------------------------------------Generating the colors---------------------------------------------#
+def generateColors(table):
+    if table == 'dm.csv':
+        length = 269
+    elif table == 'hs.csv':
+        length = 318
+    elif table == 'sc.csv':
+        length = 216
+    else:
+        exit()
+    return np.array(list(range(length)))
 #----------------------------------------Generating the Graph---------------------------------------------#
 V = [] #vertices
 E = [] #arestas
@@ -85,10 +96,15 @@ def generateGraph(table):
         #1
         I_V_I = len(V)
         #2
-        I_C_I = ...
+        I_C_I = generateColors(table)
         #3
         I_VM_I = ...
         #4
         I_M_I = ...
         #5
         I_CM_I = ...
+
+
+#----------------------------------------Generating the Motif---------------------------------------------#
+def generateMotif(vertices, edges):
+    return "nao sei como fazer isso ainda"

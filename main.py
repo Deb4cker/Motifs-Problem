@@ -23,7 +23,7 @@ for e in instances.E:
 
 print(f"\nTotal de vertices: {instances.I_V_I}")
 print(f"Total de arestas: {len(instances.E)}") 
-print(f"Total de cores: {instances.I_C_I}") #Ellipsis
+print(f"Total de cores: {len(instances.I_C_I)}") #Ellipsis
 print(f"Total de vertices com cores repetidas: {instances.I_VM_I}") #Ellipsis
 print(f"Tamanho do motif: {instances.I_M_I}") #Ellipsis
 print(f"Quantas cores tem no motif: {instances.I_CM_I}") #Ellipsis

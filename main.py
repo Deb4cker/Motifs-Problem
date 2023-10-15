@@ -68,5 +68,10 @@ print_graph(theGraph) #printa o grafo
     
 #model:
 
-# model = ConcreteModel()
-# model.obj = Objective(expr = 1, sense=minimize)
+# model    = ConcreteModel()
+# model.x  = Var(nodes, domain=Binary)
+# model.y  = Var(edges, domain=Binary)
+# mode.obj = Objective(expr=sum(model.x[v] for i in nodes) - sum(model.y[uv] for uv in edges), sense=minimize) 
+# model.cons = ConstraintList()
+# for i in range(v):
+#     model.cons.add(sum(model.x[v] for v in nodes) == 1)

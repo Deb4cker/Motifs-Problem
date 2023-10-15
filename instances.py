@@ -27,6 +27,8 @@ class edge: #aresta tem um vertice de origem (u) e um de destino (v
 
 #-----------------------------------------------------------------------------------------------------------#
 
+#ESTES VALORES SAO OS DAS COLUNAS DA TABELA 1 NA PAGINA 237 DO ARTIGO
+
 #graph_________________________________________________________________________
 # 1- numero TOTAL de vertices do grafo;
 I_V_I = ...
@@ -54,6 +56,11 @@ def generateGraph(table):
     global V 
     global E
     global I_V_I
+    global I_C_I
+    global I_VM_I
+    global I_M_I
+    global I_CM_I
+    
     with open(table, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
 
@@ -75,4 +82,13 @@ def generateGraph(table):
 
         V = set(first_column + third_column)
         V = np.array(list(V))
+        #1
         I_V_I = len(V)
+        #2
+        I_C_I = ...
+        #3
+        I_VM_I = ...
+        #4
+        I_M_I = ...
+        #5
+        I_CM_I = ...

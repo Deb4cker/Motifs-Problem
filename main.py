@@ -18,7 +18,15 @@ instances.generateGraph(table)
 for v in instances.V:
     print(v)
 
-print(instances.I_V_I)
+for e in instances.E:
+    print(e)    
+
+print(f"\nTotal de vertices: {instances.I_V_I}")
+print(f"Total de arestas: {len(instances.E)}") 
+print(f"Total de cores: {instances.I_C_I}") #Ellipsis
+print(f"Total de vertices com cores repetidas: {instances.I_VM_I}") #Ellipsis
+print(f"Tamanho do motif: {instances.I_M_I}") #Ellipsis
+print(f"Quantas cores tem no motif: {instances.I_CM_I}") #Ellipsis
 #---------------------pyomo----------------------#
 
 # V = instances.V

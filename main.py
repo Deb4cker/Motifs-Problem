@@ -72,6 +72,21 @@ print("\ngrafo:")
 for e in theGraph.edges:
     print(e)
 
+print_graph(theGraph) #printa o grafo
+
+import csv
+matrix = []
+with open('dm.csv', newline='', encoding='utf-8') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        a = ['a'] * 3
+        for key, j in enumerate(row):
+            a[key] = j
+            
+        matrix.append(a)
+        
+print(matrix)
+            
 #---------------------pyomo----------------------#
 
 # model = ConcreteModel()

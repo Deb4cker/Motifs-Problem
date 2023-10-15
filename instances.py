@@ -16,6 +16,7 @@ def generate_colors(total):
     return colors
 
 colors = generate_colors(269) #cria uma lista de cores aleatorias
+
 # 3- numero de vertices com cores repetidas;
 
 

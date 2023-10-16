@@ -58,6 +58,7 @@ def generateColors(table):
     else:
         exit()
     return np.array(list(range(length)))
+
 #----------------------------------------Generating the Graph---------------------------------------------#
 V = [] #vertices
 E = [] #arestas
@@ -70,7 +71,7 @@ def generateGraph(table):
     global I_C_I
     global I_VM_I
     global I_M_I
-    global I_CM_I
+    global I_CM_I   
     
     with open(table, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
@@ -96,14 +97,13 @@ def generateGraph(table):
         #1
         I_V_I = len(V)
         #2
-        I_C_I = generateColors(table)
+        I_C_I = list(range(1, 270))
         #3
         I_VM_I = ...
         #4
         I_M_I = ...
         #5
         I_CM_I = ...
-
 
 #----------------------------------------Generating the Motif---------------------------------------------#
 def generateMotif(vertices, edges):

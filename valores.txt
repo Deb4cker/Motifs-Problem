@@ -1,0 +1,8 @@
+homo sapiens fasta
+==============================
+N = 10658
+Xmax = 8998
+xmin = 32
+Amplitude Total (At) = 8966
+Nº de classes (K) = 15
+intervalo de classes (h) = 600

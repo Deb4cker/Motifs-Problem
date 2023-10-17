@@ -1,42 +1,18 @@
 from pyomo.environ import * 
 import instances
-# #---------------------main----------------------#
-selection = input("Choose instances: \nDrosophila melanogaster [1] \nHomo sapiens [2] \nSaccharomyces cerevisiae [3] \n")
-
-if selection == '1':
- table = "dm.csv"
-elif selection == '2':
- table = "hs.csv"
-elif selection == '3':
- table = "sc.csv"
-else:
- print("Invalid selection.")
- exit()
-
-instances.generateGraph(table)
-
-for v in instances.V:
-    print(v)
-
-for e in instances.E:
-    print(e)    
-
-print(f"\nTotal de vertices: {instances.I_V_I}")
-print(f"Total de arestas: {len(instances.E)}") 
-print(f"Total de cores: {len(instances.I_C_I)}") #Ellipsis
-print(f"Total de vertices com cores repetidas: {instances.I_VM_I}") #Ellipsis
-print(f"Tamanho do motif: {instances.I_M_I}") #Ellipsis
-print(f"Quantas cores tem no motif: {instances.I_CM_I}") #Ellipsis
-# #---------------------pyomo----------------------#
-
+from instances import *
 
 # # Dados do problema
 
-V = instances.V  # Conjunto de vértices
-E = instances.E  # Conjunto de arestas
-C = list(range(1, 270))  # Conjunto de cores
-m = 24  # Dicionário com a multiplicidade de cada cor em C
-print(C)
+nvertex = int(input("Digite o número de vértices: "))
+ncolors = int(input("Digite o número de cores: "))
+
+
+V = generateVertex(nvertex)  # Conjunto de vértices
+C = generateColors(ncolors)  # Conjunto de cores
+E = generateEdges(V) # Conjunto de arestas
+M = generateM(nvertex, ncolors)  # Dicionário com a multiplicidade de cada cor em C
+Vc = generateVc(V, nvertex, ncolors)
 
 model = ConcreteModel()
 
@@ -49,16 +25,16 @@ model.obj = Objective(expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv i
 
 # Restrições
 
-model.cons = ConstraitList()
+model.cons = ConstraintList()
 
 for c in C:
-    model.cons.add(sum(model.x[v] for v in V) == m[c])
+  for vczinho in Vc:
+    model.cons.add(sum(model.x[v] for v in vczinho) == M[c])
+for uv in E:
+  model.cons.add(model.y[uv] <= model.x[uv[0]])
 
 for uv in E:
-    model.cons.add(model.y[uv] <= model.x[uv[0]])
-
-for uv in E:
-    model.cons.add(model.y[uv] <= model.x[uv[1]])
+  model.cons.add(model.y[uv] <= model.x[uv[1]])
 
 # Resolver o modelo
 solver = SolverFactory('glpk')

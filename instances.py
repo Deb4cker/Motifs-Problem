@@ -34,18 +34,16 @@ def generateM(nvertex,ncolors):
         max -= quantity
     return m
 
-def generateVc(vertex, nvertex, ncolors):
+def generateVc(vertex, M, ncolors):
     vertexCopy = [x for x in vertex]
     # vc = [[]] * ncolors
     vc = []
     for i in range(ncolors):
         vc.append([])
-    for i in range(nvertex):
-        index = random.randint(0, ncolors-1)
-        vcOldIndex = vc[index]
-        print(M[index])
-        for i in range(M[index]):
+        
+    for i,m in enumerate(M):
+        for j in range(m):
             v = random.choice(vertexCopy)
-            vcOldIndex.append(v)
-            texCopy.remove(v)
+            vc[i].append(v)
+            vertexCopy.remove(v)
     return vc

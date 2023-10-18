@@ -7,7 +7,6 @@ from instances import *
 nvertex = int(input("Digite o número de vértices: "))
 ncolors = int(input("Digite o número de cores: "))
 
-global V, C, E, M, Vc
 
 V = generateVertex(nvertex)  # Conjunto de vértices
 C = generateColors(ncolors)  # Conjunto de cores
@@ -30,30 +29,19 @@ model.y = Var(E, domain=Binary)  # Variáveis para indicar se uma aresta é sele
 model.obj = Objective(expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv in E), sense=minimize)
 
 # Restrições
-
-model.constraint_one = ConstraintList()
-model.constraint_two = ConstraintList()
-model.constraint_three = ConstraintList()
-model.constraint_four = ConstraintList()
-model.constraint_five = ConstraintList()
-model.constraint_six = ConstraintList()
-model.constraint_seven = ConstraintList()
+model.const = ConstraintList()
 
 for c in C:
-    model.constraint_one.add(sum(model.x[v] for v in Vc[c]) == M[c])
-
+    model.const.add(sum(model.x[v] for v in Vc[c]) == M[c])
 for uv in E:
-    model.constraint_two.add(model.y[uv] <= model.x[uv[0]])
-    model.constraint_three.add(model.y[uv] <= model.x[uv[1]])
-
+    model.const.add(model.y[uv] <= model.x[uv[0]])
+    model.const.add(model.y[uv] <= model.x[uv[1]])
 for v in V:
-    model.constraint_four.add(model.x[v] >= 0)
-    model.constraint_five.add(model.x[v] <= 1)
-
+    model.const.add(model.x[v] >= 0)
+    model.const.add(model.x[v] <= 1)
 for uv in E:
-    model.constraint_six.add(model.y[uv] >= 0)
-    model.constraint_seven.add(model.y[uv] <= 1)
-
+    model.const.add(model.y[uv] >= 0)
+    model.const.add(model.y[uv] <= 1)
 # Resolver o modelo
 solver = SolverFactory('glpk')
 results = solver.solve(model)

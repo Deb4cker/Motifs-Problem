@@ -26,7 +26,10 @@ def generateM(nvertex,ncolors):
     m = []
     max = nvertex
     for i in range(ncolors):
-        quantity = random.randint(0, max//2) # max//2 to distribute the colors better
+        if(i == ncolors-1):
+            m.append(max)
+            break
+        quantity = random.randint(0, max//2)
         m.append(quantity)
         max -= quantity
     return m
@@ -34,7 +37,10 @@ def generateM(nvertex,ncolors):
 def generateVc(vertex, nvertex, ncolors):
     vertexCopy = [x for x in vertex]
     # vc = [[]] * ncolors
-    vc = [[] for _ in range(ncolors)] 
+    vc = []
+    for i in range(ncolors):
+        vc.append([])
+    print(vc)
     for i in range(nvertex):
         index = random.randint(0, ncolors-1)
         vcOldIndex = vc[index]
@@ -44,7 +50,3 @@ def generateVc(vertex, nvertex, ncolors):
         vcOldIndex.append(v)
         vertexCopy.remove(v)
     return vc
-
-
-
-#create a dictionary of list and do a crud on it

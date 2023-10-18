@@ -22,28 +22,24 @@ def generateEdges(vertex):
         pumEdges.append((v, u))
     return pumEdges
 
-def generateM(nvertex,ncolors):
+def generateVerticesColors(V, ncolors):
+    vertexColor = [0 for _ in range(len(V))]
+    for i in range(len(vertexColor)):
+        vertexColor[i] = random.randint(0, ncolors - 1)
+    return vertexColor    
+
+def generateM(ncolors, cores):
     m = []
-    max = nvertex
-    for i in range(ncolors):
-        if(i == ncolors-1):
-            m.append(max)
-            break
-        quantity = random.randint(0, max//2)
-        m.append(quantity)
-        max -= quantity
+    for c in range(ncolors):
+        amount = len([x for x in cores if x == c])
+        m.append(random.randint(0, amount))
     return m
 
-def generateVc(vertex, M, ncolors):
-    vertexCopy = [x for x in vertex]
-    # vc = [[]] * ncolors
-    vc = []
-    for i in range(ncolors):
-        vc.append([])
-        
-    for i,m in enumerate(M):
-        for j in range(m):
-            v = random.choice(vertexCopy)
-            vc[i].append(v)
-            vertexCopy.remove(v)
-    return vc
+def generateVc(cores, ncolors):
+    Vc = {}
+    for c in range(ncolors):
+        Vc[c] = []
+        for i in range(len(cores)):
+            if cores[i] == c:
+                Vc[c].append(i)
+    return Vc

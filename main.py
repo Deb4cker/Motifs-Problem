@@ -7,12 +7,12 @@ from instances import *
 nvertex = int(input("Digite o número de vértices: "))
 ncolors = int(input("Digite o número de cores: "))
 
-
 V = generateVertex(nvertex)  # Conjunto de vértices
 C = generateColors(ncolors)  # Conjunto de cores
 E = generateEdges(V)  # Conjunto de arestas
-M = generateM(nvertex, ncolors)  # Dicionário com a multiplicidade de cada cor em C
-Vc = generateVc(V, M, ncolors)
+cores = generateVerticesColors(V, ncolors)
+M = generateM(ncolors, cores)
+Vc = generateVc(cores, ncolors)
 
 model = ConcreteModel()
 
@@ -22,21 +22,16 @@ model.y = Var(E, domain=Binary)  # Variáveis para indicar se uma aresta é sele
 
 # Função objetivo
 model.obj = Objective(
-    expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv in E), sense=minimize
-)
+    expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv in E), sense=minimize)
 
 # Restrições
 
 model.cons = ConstraintList()
-print(V)
-print(M)
-print(Vc)
-for i,c in enumerate(C):
-  # model.cons.add(sum(model.x[len(vczinho)] for vczinho in Vc) == M[c])
-  model.cons.add(model.x[len(Vc[i])] == M[c])
+
+for c in C:
+  model.cons.add(sum(model.x[v] for v in Vc[c]) == M[c])
 
 for uv in E:
-  print([uv], uv[0], uv[1])
   model.cons.add(model.y[uv] <= model.x[uv[0]])
 
 for uv in E:

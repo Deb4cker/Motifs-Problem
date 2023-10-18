@@ -7,6 +7,7 @@ from instances import *
 nvertex = int(input("Digite o número de vértices: "))
 ncolors = int(input("Digite o número de cores: "))
 
+global V, C, E, M, Vc
 
 V = generateVertex(nvertex)  # Conjunto de vértices
 C = generateColors(ncolors)  # Conjunto de cores
@@ -15,6 +16,11 @@ M = generateM(nvertex, ncolors)  # Dicionário com a multiplicidade de cada cor 
 Vc = generateVc(V, nvertex, ncolors)
 
 model = ConcreteModel()
+
+#Parâmetros 
+model.M = Param(C)
+model.nvertex = Param()
+model.ncolors = Param()
 
 # Variáveis
 model.x = Var(V, domain=Binary)  # Variáveis para indicar se um vértice é selecionado
@@ -25,16 +31,28 @@ model.obj = Objective(expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv i
 
 # Restrições
 
-model.cons = ConstraintList()
+model.constraint_one = ConstraintList()
+model.constraint_two = ConstraintList()
+model.constraint_three = ConstraintList()
+model.constraint_four = ConstraintList()
+model.constraint_five = ConstraintList()
+model.constraint_six = ConstraintList()
+model.constraint_seven = ConstraintList()
 
 for c in C:
-  for vczinho in Vc:
-    model.cons.add(sum(model.x[v] for v in vczinho) == M[c])
-for uv in E:
-  model.cons.add(model.y[uv] <= model.x[uv[0]])
+    model.constraint_one.add(sum(model.x[v] for v in Vc[c]) == M[c])
 
 for uv in E:
-  model.cons.add(model.y[uv] <= model.x[uv[1]])
+    model.constraint_two.add(model.y[uv] <= model.x[uv[0]])
+    model.constraint_three.add(model.y[uv] <= model.x[uv[1]])
+
+for v in V:
+    model.constraint_four.add(model.x[v] >= 0)
+    model.constraint_five.add(model.x[v] <= 1)
+
+for uv in E:
+    model.constraint_six.add(model.y[uv] >= 0)
+    model.constraint_seven.add(model.y[uv] <= 1)
 
 # Resolver o modelo
 solver = SolverFactory('glpk')
@@ -53,4 +71,3 @@ if results.solver.termination_condition == TerminationCondition.optimal:
     for uv in E:
         if model.y[uv].value == 1:
             print(uv)
-

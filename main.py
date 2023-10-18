@@ -28,13 +28,15 @@ model.obj = Objective(
 # Restrições
 
 model.cons = ConstraintList()
-# print(V)
-# print(M)
-# print(Vc)
-for c in C:
-  model.cons.add(sum(model.x[len(vczinho)] for vczinho in Vc) == M[c])
+print(V)
+print(M)
+print(Vc)
+for i,c in enumerate(C):
+  # model.cons.add(sum(model.x[len(vczinho)] for vczinho in Vc) == M[c])
+  model.cons.add(model.x[len(Vc[i])] == M[c])
 
 for uv in E:
+  print([uv], uv[0], uv[1])
   model.cons.add(model.y[uv] <= model.x[uv[0]])
 
 for uv in E:

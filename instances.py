@@ -40,13 +40,12 @@ def generateVc(vertex, nvertex, ncolors):
     vc = []
     for i in range(ncolors):
         vc.append([])
-    print(vc)
     for i in range(nvertex):
         index = random.randint(0, ncolors-1)
         vcOldIndex = vc[index]
-        v = random.choice(vertexCopy)
-        # listVertexColofur = vcOldIndex.append(v)
-        # vc[index] = listVertexColofur
-        vcOldIndex.append(v)
-        vertexCopy.remove(v)
+        print(M[index])
+        for i in range(M[index]):
+            v = random.choice(vertexCopy)
+            vcOldIndex.append(v)
+            texCopy.remove(v)
     return vc

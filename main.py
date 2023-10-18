@@ -39,18 +39,23 @@ for uv in E:
 
 # Resolver o modelo
 solver = SolverFactory("glpk")
+solver.options['tmlim']= 15
 results = solver.solve(model)
 
-# Imprimir resultados
+# Imprimir resultadosz
 print('Status:', results.solver.status)
 print('Termination condition:', results.solver.termination_condition)
 if results.solver.termination_condition == TerminationCondition.optimal:
-    print("Optimal solution cost:", model.obj())
+    print("Solução ótima:", model.obj(), "Motfis")
     print("Vértices selecionados:")
+    verticesList = []
+    arestasList = []
     for v in V:
         if model.x[v].value == 1:
-            print(v)
+            verticesList.append(v)
+    print(verticesList)
     print("Arestas selecionadas:")
     for uv in E:
         if model.y[uv].value == 1:
-            print(uv)
+            arestasList.append(uv)
+    print(arestasList)

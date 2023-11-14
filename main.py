@@ -18,10 +18,10 @@ M = [2, 1, 1]
 # cores = generateVerticesColors(V, ncolors)
 # M = generateM(ncolors, cores)
 # Vc = generateVc(cores, ncolors)
-
+solucoes = [2, 1: [o motif], 5, 6, 3]
 solution = generateSolution(V) # Solução inicial
 edgeCountList = countEdges(V, E) # Lista de contagem de arestas
-randomvertice = random.choice(V) # Vértice aleatório  
+randomvertice = 6 # Vértice aleatório  
 connectedvertices = getConnectedVertices(V, E, randomvertice)
 colorsOfConnectedVertices = getColorsOfVertices(connectedvertices, Vc)
 print(M)
@@ -32,3 +32,16 @@ print(edgeCountList)
 print(randomvertice)
 print(connectedvertices)
 print(colorsOfConnectedVertices)
+
+class motif:
+    count: 0
+    colors: []  
+
+#choose aleatory vertex
+#iterate in each connected vertex until have tha pattern [2 of color 0, 1 of color 1 and 1 of color 2]
+#while this, mount the motif
+#insert the motif in a solution array
+#search for the next vertex
+#repeat the process until not have more vertex to search
+#get the motif with the min count in the array of solutions
+#print this motif as the solution

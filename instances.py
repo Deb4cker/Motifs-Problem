@@ -43,3 +43,33 @@ def generateVc(cores, ncolors):
             if cores[i] == c:
                 Vc[c].append(i)
     return Vc
+
+def generateSolution(vertex):
+    solution = [0 for _ in range(len(vertex))]
+    return solution
+
+def countEdges(vertex, edges):
+    solution = [0 for _ in range(len(vertex))]
+    for i in range(len(edges)):
+        solution[edges[i][0]] += 1
+        solution[edges[i][1]] += 1
+    return solution
+
+def getConnectedVertices(vertex, edges, v):
+    connectedVertices = []
+    for i in range(len(edges)):
+        if edges[i][0] == v:
+            connectedVertices.append(edges[i][1])
+        elif edges[i][1] == v:
+            connectedVertices.append(edges[i][0])
+    return connectedVertices
+
+def getColorsOfVertices(vertex, vertexColor):
+    colors = {}
+    for v in vertex:
+        for color, vertices in vertexColor.items():
+            if v in vertices:
+                colors[v] = color
+                break
+    return colors
+    

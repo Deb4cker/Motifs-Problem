@@ -1,5 +1,10 @@
 import random
 
+class Motif:
+    def __init__(self, subgraph):
+        self.subgraph = subgraph
+        self.notConnectedEdges = len(subgraph) * (len(subgraph) - 1) // 2 - len(subgraph)
+
 def generateVertex(nvertex):
     vertex = []
     for i in range(nvertex):
@@ -72,4 +77,37 @@ def getColorsOfVertices(vertex, vertexColor):
                 colors[v] = color
                 break
     return colors
+
+def getVerticeColor(vertice, vertexColor):
+    for color, vertex in vertexColor.items():
+        if vertice in vertex:
+            return color
+
+def countColorByM(vertice, color, M, countArray, possibleSolution):
+    if M[color] > countArray[color]:
+        countArray[color] = countArray[color] + 1
+        possibleSolution.append(vertice)
+
+
+def verticeVisited(v, visitedVerticesArray):
+    visitedVerticesArray[v - 1] = True
+
+
+def getRandomNotVisitedVertice(visitedVerticesArray):
+    notVisitedVertex = [i for i, visited in enumerate(visitedVerticesArray) if not visited]
+    return random.choice(notVisitedVertex)
+
+def solve(Vertex, Edges, Vc, randomVertice, M):
+    countArray = [0 for _ in range(len(M))]               # Array de contagem de cores. Conta quantas vezes uma cor foi usada 
+    visitedVertices = [False for _ in range(len(Vertex))] # Array de vértices visitados
+    possibleSolution = []                                 # Array de solução possível
     
+    countColorByM(randomVertice, getVerticeColor(randomVertice, Vc), M, countArray) #vai contabilizar a cor do vertice aleatorio
+
+    while M != countArray:                                                  # Enquanto o array de contagem de cores for diferente do array de cores
+        connectedVertices = getConnectedVertices(Edges, randomVertice)      # Pega os vértices conectados ao vértice aleatório
+        for v in connectedVertices:                                         # Para cada vértice conectado
+            vColor = getVerticeColor(v, Vc)                                 # Pega a cor do vértice
+            countColorByM(v, vColor, M, countArray, possibleSolution)       # Contabiliza a cor do vértice (se for possível)
+        verticeVisited(v, visitedVertices)                                  # Marca o vértice como visitado (nesta iteração)
+        randomVertice = getRandomNotVisitedVertice(Vertex, visitedVertices) # Pega um vértice aleatório não visitado

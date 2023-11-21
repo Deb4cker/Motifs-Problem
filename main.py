@@ -13,7 +13,7 @@ E = [(6, 9), (5, 7), (6, 0), (6, 8), (6, 1), (3, 4), (4, 9)] # Conjunto de arest
 Vc = {0: [2, 4, 0, 9, 6], 1: [3, 5], 2: [1, 8, 7]} # Conjunto de vértices e suas cores
 M = [2, 1, 1] #O subgrafo deve ter a quantidade tal para cada cor
 
-colorDictionary = generateVerticesWithColors(Vc)
+colorDictionary = generateVerticesWithColors(Vc, V)
 graph = generateGraph(V, E)
 
 # V = generateVertex(nvertex)  # Conjunto de vértices
@@ -23,4 +23,7 @@ graph = generateGraph(V, E)
 # M = generateM(ncolors, cores)
 # Vc = generateVc(cores, ncolors)
 
-
+for i in graph:
+    print(i, graph[i])
+    
+print(colorDictionary)

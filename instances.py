@@ -44,12 +44,25 @@ def generateVc(cores, ncolors):
                 Vc[c].append(i)
     return Vc
 
-def generateVerticesWithColors(vertexColor):
-        verticesWithColors = {}
-        for color, vertices in vertexColor.items():
-            for vertex in vertices:
-                verticesWithColors[vertex] = color
-        return verticesWithColors
+def generateGraph(vertex, edges):
+    graph = {}
+    for v in vertex:
+        graph[v] = []
+    for edge in edges:
+        v1, v2 = edge
+        graph[v1].append(v2)
+        graph[v2].append(v1)
+    return graph
+
+def getVerticeColor(vertice, colors):
+    return colors[vertice]
+
+def generateVerticesWithColors(vertexColor, V):
+    verticesWithColors = [0 for _ in range(len(V))]
+    for color, vertices in vertexColor.items():
+        for vertice in vertices:
+            verticesWithColors[vertice] = color
+    return verticesWithColors
 
 def generateGraph(vertex, edges):
     graph = {}

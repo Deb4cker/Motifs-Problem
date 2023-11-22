@@ -54,9 +54,6 @@ def generateGraph(vertex, edges):
         graph[v2].append(v1)
     return graph
 
-def getVerticeColor(vertice, colors):
-    return colors[vertice]
-
 def generateVerticesWithColors(vertexColor, V):
     verticesWithColors = [0 for _ in range(len(V))]
     for color, vertices in vertexColor.items():
@@ -76,3 +73,11 @@ def generateGraph(vertex, edges):
 
 def getVerticeColor(vertex, dicitonary):
     return dicitonary[vertex]
+
+def getGrade(grades, vertex):
+    return grades[vertex]
+
+def generateGrades(graph, V):
+    grades = [0 for _ in range(len(V))]
+    for vertex in graph:
+        grades[vertex] = len(graph[vertex])

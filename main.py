@@ -1,5 +1,4 @@
 from pyomo.environ import *
-import instances
 from instances import *
 
 # # Dados do problema

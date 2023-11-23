@@ -32,49 +32,39 @@ print(f"Quantas cores tem no motif: {instances.I_CM_I}") #Ellipsis
 
 # # Dados do problema
 
-V = instances.V  # Conjunto de vértices
-E = instances.E  # Conjunto de arestas
-C = list(range(1, 270))  # Conjunto de cores
-m = 24  # Dicionário com a multiplicidade de cada cor em C
-print(C)
+# nvertex = int(input("Digite o número de vértices: "))
+# ncolors = int(input("Digite o número de cores: "))
 
-model = ConcreteModel()
 
-# Variáveis
-model.x = Var(V, domain=Binary)  # Variáveis para indicar se um vértice é selecionado
-model.y = Var(E, domain=Binary)  # Variáveis para indicar se uma aresta é selecionada
+V = [0, 1, 2, 3, 4, 5, 6 ,7, 8, 9] # Conjunto de vértices
+C = [0, 1, 2] # Conjunto de cores
+E = [(6, 9), (5, 7), (6, 0), (6, 8), (6, 1), (3, 4), (4, 2), (6,5), (1,4)] # Conjunto de arestas
+Vc = {0: [2, 4, 0, 9, 6], 1: [3, 5], 2: [1, 8, 7]} # Conjunto de vértices e suas cores
+M = [2, 1, 1] #O subgrafo deve ter a quantidade tal para cada cor
 
-# Função objetivo
-model.obj = Objective(expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv in E), sense=minimize)
 
-# Restrições
 
-model.cons = ConstraitList()
+# V = generateVertex(nvertex)  # Conjunto de vértices
+# C = generateColors(ncolors)  # Conjunto de cores
+# E = generateEdges(V)  # Conjunto de arestas
+# cores = generateVerticesColors(V, ncolors)
+# M = generateM(ncolors, cores)
+# Vc = generateVc(cores, ncolors)
 
-for c in C:
-    model.cons.add(sum(model.x[v] for v in V) == m[c])
+# motifs = find_motifs(V, E, Vc, M
 
-for uv in E:
-    model.cons.add(model.y[uv] <= model.x[uv[0]])
+#choose aleatory vertex
+#iterate in each connected vertex until have tha pattern [2 of color 0, 1 of color 1 and 1 of color 2]
+#while this, mount the motif
+#insert the motif in a solution array
+#search for the next vertex
+#repeat the process until not have more vertex to search
+#get the motif with the min count in the array of solutions
+#print this motif as the solution
 
-for uv in E:
-    model.cons.add(model.y[uv] <= model.x[uv[1]])
+colorDictionary = generateVerticesWithColors(Vc, V)
+graph = generateGraph(V, E)
 
-# Resolver o modelo
-solver = SolverFactory('glpk')
-results = solver.solve(model)
-
-# Imprimir resultados
-print('Status:', results.solver.status)
-print('Termination condition:', results.solver.termination_condition)
-if results.solver.termination_condition == TerminationCondition.optimal:
-    print('Optimal solution cost:', model.obj())
-    print('Vértices selecionados:')
-    for v in V:
-        if model.x[v].value == 1:
-            print(v)
-    print('Arestas selecionadas:')
-    for uv in E:
-        if model.y[uv].value == 1:
-            print(uv)
-
+print(depth_search(graph.get(6), graph, [6], V))
+    
+# print(colorDictionary)

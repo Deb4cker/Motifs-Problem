@@ -74,36 +74,9 @@ def generateGraph(vertex, edges):
 def getVerticeColor(vertex, dicitonary):
     return dicitonary[vertex]
 
-def getGrade(grades, vertex):
-    return grades[vertex]
-
-def generateGrades(graph, V):
-    grades = [0 for _ in range(len(V))]
+def generateDegrees(graph, V):
+    degrees = [0 for _ in range(len(V))]
     for vertex in graph:
-        grades[vertex] = len(graph[vertex])
+        degrees[vertex] = len(graph[vertex])
         
-def depth_search(queue, graph, S, V):
-    visited = []
-    current_delta = [0 for _ in range(len(V))]
-    
-    while len(queue) != 0:
-        s = queue[0]
-        if s not in S:
-            for neighbor in graph.get(s):
-                if neighbor in S and neighbor not in visited                   :
-                    n_neighbor_in_s = sum(el in graph.get(s) for el in S)
-                    current_delta[s] = (1 - n_neighbor_in_s)
-                elif neighbor not in visited:
-                    if current_delta[s] < 0:
-                        current_delta[neighbor] = 1
-                    else:
-                        current_delta[neighbor] = current_delta[s] + 1
-                
-                if neighbor not in visited and neighbor not in queue:
-                    queue.append(neighbor)
-            
-        queue.pop(0)
-        visited.append(s)
-            
-            
-    return current_delta
+    return degrees

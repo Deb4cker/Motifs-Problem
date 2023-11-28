@@ -29,7 +29,7 @@ def start(V, E, C, Vc, M):
   solver.options['tmlim']= 15
   results = solver.solve(model)
 
-  # Imprimir resultadosz
+  # Imprimir resultados
   print()
   print("================== Solução Matemática ==================")
   print('Status:', results.solver.status)

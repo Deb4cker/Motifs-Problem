@@ -1,80 +1,44 @@
-from pyomo.environ import * 
 import instances
-# #---------------------main----------------------#
-selection = input("Choose instances: \nDrosophila melanogaster [1] \nHomo sapiens [2] \nSaccharomyces cerevisiae [3] \n")
-
-if selection == '1':
- table = "dm.csv"
-elif selection == '2':
- table = "hs.csv"
-elif selection == '3':
- table = "sc.csv"
-else:
- print("Invalid selection.")
- exit()
-
-instances.generateGraph(table)
-
-for v in instances.V:
-    print(v)
-
-for e in instances.E:
-    print(e)    
-
-print(f"\nTotal de vertices: {instances.I_V_I}")
-print(f"Total de arestas: {len(instances.E)}") 
-print(f"Total de cores: {len(instances.I_C_I)}") #Ellipsis
-print(f"Total de vertices com cores repetidas: {instances.I_VM_I}") #Ellipsis
-print(f"Tamanho do motif: {instances.I_M_I}") #Ellipsis
-print(f"Quantas cores tem no motif: {instances.I_CM_I}") #Ellipsis
-# #---------------------pyomo----------------------#
-
+import solver
 
 # # Dados do problema
 
-V = instances.V  # Conjunto de vértices
-E = instances.E  # Conjunto de arestas
-C = list(range(1, 270))  # Conjunto de cores
-m = 24  # Dicionário com a multiplicidade de cada cor em C
-print(C)
+nvertex = int(input("Digite o número de vértices: "))
+ncolors = int(input("Digite o número de cores: "))
 
-model = ConcreteModel()
 
-# Variáveis
-model.x = Var(V, domain=Binary)  # Variáveis para indicar se um vértice é selecionado
-model.y = Var(E, domain=Binary)  # Variáveis para indicar se uma aresta é selecionada
+# V = [0, 1, 2, 3, 4, 5, 6 ,7, 8, 9] # Conjunto de vértices
+# C = [0, 1, 2] # Conjunto de cores
+# E =[(4, 5), (9, 3), (0, 6), (7, 5), (3, 8), (8, 6), (1, 2), (5, 6), (2, 6)] # Conjunto de arestas
+# Vc = {0: [5], 1: [0, 2, 3, 4, 8, 9], 2: [1, 6, 7]}# Conjunto de vértices e suas cores
+# M = [0, 2, 0] #O subgrafo deve ter a quantidade tal para cada cor
 
-# Função objetivo
-model.obj = Objective(expr=sum(model.x[v] for v in V) - sum(model.y[uv] for uv in E), sense=minimize)
+V = instances.generateVertex(nvertex)  # Conjunto de vértices
+C = instances.generateColors(ncolors)  # Conjunto de cores
+E = instances.generateEdges(V)  # Conjunto de arestas
+cores = instances.generateVerticesColors(V, ncolors)
+M = instances.generateM(ncolors, cores)
+Vc = instances.generateVc(cores, ncolors)
 
-# Restrições
+print("edges:", E)
+print("M", M)
+print('Vc', Vc)
 
-model.cons = ConstraitList()
+# motifs = find_motifs(V, E, Vc, M
 
-for c in C:
-    model.cons.add(sum(model.x[v] for v in V) == m[c])
+#choose aleatory vertex
+#iterate in each connected vertex until have tha pattern [2 of color 0, 1 of color 1 and 1 of color 2]
+#while this, mount the motif
+#insert the motif in a solution array
+#search for the next vertex
+#repeat the process until not have more vertex to search
+#get the motif with the min count in the array of solutions
+#print this motif as the solution
 
-for uv in E:
-    model.cons.add(model.y[uv] <= model.x[uv[0]])
+graph = instances.generateGraph(V, E)
 
-for uv in E:
-    model.cons.add(model.y[uv] <= model.x[uv[1]])
+degrees = instances.generateDegrees(graph, V)
 
-# Resolver o modelo
-solver = SolverFactory('glpk')
-results = solver.solve(model)
+print(solver.start(degrees, graph, V, Vc, M))
 
-# Imprimir resultados
-print('Status:', results.solver.status)
-print('Termination condition:', results.solver.termination_condition)
-if results.solver.termination_condition == TerminationCondition.optimal:
-    print('Optimal solution cost:', model.obj())
-    print('Vértices selecionados:')
-    for v in V:
-        if model.x[v].value == 1:
-            print(v)
-    print('Arestas selecionadas:')
-    for uv in E:
-        if model.y[uv].value == 1:
-            print(uv)
-
+# print(colorDictionary)

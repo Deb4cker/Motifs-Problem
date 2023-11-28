@@ -1,5 +1,7 @@
 import instances
-import solver
+import metaheuristic_method
+import mathematical_method
+import time
 
 # # Dados do problema
 
@@ -24,21 +26,14 @@ print("edges:", E)
 print("M", M)
 print('Vc', Vc)
 
-# motifs = find_motifs(V, E, Vc, M
-
-#choose aleatory vertex
-#iterate in each connected vertex until have tha pattern [2 of color 0, 1 of color 1 and 1 of color 2]
-#while this, mount the motif
-#insert the motif in a solution array
-#search for the next vertex
-#repeat the process until not have more vertex to search
-#get the motif with the min count in the array of solutions
-#print this motif as the solution
-
-graph = instances.generateGraph(V, E)
-
-degrees = instances.generateDegrees(graph, V)
-
-print(solver.start(degrees, graph, V, Vc, M))
+start_mathematical = time.time()
+mathematical_method.start(V, E, C, Vc, M)
+end_mathematical = time.time()
+print("Tempo de execução: ", end_mathematical - start_mathematical)
+  
+start_metaheuristic = time.time()
+metaheuristic_method.start(V, E, Vc, M)
+end_metaheuristic = time.time()
+print("Tempo de execução: ", end_metaheuristic - start_metaheuristic)
 
 # print(colorDictionary)

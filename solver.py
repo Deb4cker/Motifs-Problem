@@ -8,13 +8,13 @@ def start(degrees, graph, verticeSet, Vc, M):
 def iterated_greedy(initial_vertex, graph, verticeSet, Vc, M, degrees):
     S_incumbent = construction(initial_vertex, graph, verticeSet, Vc, M, degrees)
     S = S_incumbent.copy()
-    stagnation = 1000
+    stagnation = 100
     while stagnation > 0:
         S = destruction(S)
         S = construction(S, graph, verticeSet, Vc, M, degrees)
         if count_connected_components(graph, S) < count_connected_components(graph, S_incumbent):
             S_incumbent = S
-            stagnation = 1000
+            stagnation = 100
         else:
             stagnation -= 1
 
@@ -22,7 +22,7 @@ def iterated_greedy(initial_vertex, graph, verticeSet, Vc, M, degrees):
     return S_incumbent, count_connected_components(graph, S_incumbent) 
 
 def destruction(solution):
-    k = 0.8
+    k = 0.5
     S = solution.copy()
     number_of_s_to_be_removed = int(len(S) * k)
     for _ in range(number_of_s_to_be_removed):
@@ -123,7 +123,7 @@ def sortDeltas(delta):
 
 
 def select_candidates(deltas):
-    k = 0.8
+    k = 0.2
     numberOfCandidates = int(len(deltas) * k)
     deltas_copy = [x for x in deltas]
     candidates = []

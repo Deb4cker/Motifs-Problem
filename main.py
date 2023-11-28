@@ -9,9 +9,9 @@ ncolors = int(input("Digite o número de cores: "))
 
 # V = [0, 1, 2, 3, 4, 5, 6 ,7, 8, 9] # Conjunto de vértices
 # C = [0, 1, 2] # Conjunto de cores
-# E = [(6, 2), (5, 7), (8, 2), (9, 0), (4, 2), (7, 1), (0, 1), (3, 2), (2, 1)] # Conjunto de arestas
-# Vc = {0: [0, 2, 5, 7], 1: [3, 4, 8, 9], 2: [1, 6]} # Conjunto de vértices e suas cores
-# M = [0, 3, 1] #O subgrafo deve ter a quantidade tal para cada cor
+# E =[(4, 5), (9, 3), (0, 6), (7, 5), (3, 8), (8, 6), (1, 2), (5, 6), (2, 6)] # Conjunto de arestas
+# Vc = {0: [5], 1: [0, 2, 3, 4, 8, 9], 2: [1, 6, 7]}# Conjunto de vértices e suas cores
+# M = [0, 2, 0] #O subgrafo deve ter a quantidade tal para cada cor
 
 V = instances.generateVertex(nvertex)  # Conjunto de vértices
 C = instances.generateColors(ncolors)  # Conjunto de cores

@@ -8,21 +8,23 @@ def start(degrees, graph, verticeSet, Vc, M):
 def iterated_greedy(initial_vertex, graph, verticeSet, Vc, M, degrees):
     S_incumbent = construction(initial_vertex, graph, verticeSet, Vc, M, degrees)
     S = S_incumbent.copy()
-    stagnation = 100
+    stagnation = 1000
     while stagnation > 0:
         S = destruction(S)
         S = construction(S, graph, verticeSet, Vc, M, degrees)
-        if sumDeltas(graph, S, verticeSet) < sumDeltas(graph, S_incumbent, verticeSet):
+        if count_connected_components(graph, S) < count_connected_components(graph, S_incumbent):
             S_incumbent = S
-            stagnation = 100
+            stagnation = 1000
         else:
             stagnation -= 1
 
-    return S_incumbent
+    a = count_connected_components(graph, [9, 2, 3, 4, 0, 8, 7])
+    return S_incumbent, count_connected_components(graph, S_incumbent) 
 
 def destruction(solution):
+    k = 0.8
     S = solution.copy()
-    number_of_s_to_be_removed = int(len(S) / 2)
+    number_of_s_to_be_removed = int(len(S) * k)
     for _ in range(number_of_s_to_be_removed):
         s = random.choice(S) 
         index = S.index(s)
@@ -48,8 +50,6 @@ def strategy(graph, S, verticeSet, Vc, M, countColors):
     deltas = calculate_delta(queue, graph, S, verticeSet)
     deltas = removeSVertexFromDelta(S, deltas)
     deltas = removeNonNecessaryColors(Vc, M, countColors, deltas,S)
-    if len(deltas) == 0:
-        print('aqui')
     organized_deltas = sortDeltas(deltas)
     return organized_deltas
 
@@ -73,20 +73,20 @@ def calculate_delta(queue, graph_original, S, verticeSet):
     current_delta = [{x: 0} for x in verticeSet]
 
     while len(queue) != 0:
-        s = queue[0]
-        for neighbor in graph.get(s):
+        q = queue[0]
+        for neighbor in graph.get(q):
             if neighbor not in visited:
-                if s in S:
+                if neighbor in S:
+                        current_delta[neighbor] = {neighbor: 0}
+                elif sum(el in graph.get(neighbor) for el in S) > 0: #if neighbor contains another neighbor in S
                     n_neighbor_in_s = sum(el in graph.get(neighbor) for el in S)
                     current_delta[neighbor] = {neighbor: (1 - n_neighbor_in_s)}
                 else:
-                    if current_delta[s].get(s) < 0:
+                    if current_delta[q].get(q) < 0:
                         current_delta[neighbor] = {neighbor: 1}
-                    elif neighbor in S:
-                        current_delta[neighbor] = {neighbor: 0}
                     else:
                         current_delta[neighbor] = {
-                            neighbor: current_delta[s].get(s) + 1
+                            neighbor: current_delta[q].get(q) + 1
                         }        
                 queue.append(neighbor)
                 visited.append(neighbor)
@@ -119,11 +119,11 @@ def removeNonNecessaryColors(Vc, M, colorCount, deltas,S):
 
 def sortDeltas(delta):
     delta_copy = [x for x in delta]
-    return sorted(delta_copy, key=lambda x: list(x.values())[0])
+    return sorted(delta_copy, key=lambda x: (list(x.values())[0], list(x.keys())[0]))
 
 
 def select_candidates(deltas):
-    k = 0.5
+    k = 0.8
     numberOfCandidates = int(len(deltas) * k)
     deltas_copy = [x for x in deltas]
     candidates = []
@@ -143,15 +143,6 @@ def deltaIsGreaterOrEqual(candidate, best_candidate, deltas):
 
     return delta_dict.get(candidate) >= delta_dict.get(best_candidate)
 
-def sumDeltas(graph, S, verticeSet):
-    sum = 0
-    queue = graph.get(S[0])
-    deltas = calculate_delta(queue, graph, S, verticeSet)
-    for s in S:
-        sum += deltas[s].get(s)
-    return sum    
-    
-
 def countDegrees(graph, V):
     grades = [0 for _ in range(len(V))]
     for v in V:
@@ -168,3 +159,30 @@ def get_greater_degree_with_desired_color(degrees, Vc, M):
         if index in not_desired_colors:
              degrees[index] = 0
     return degrees.index(max(degrees))
+
+def count_connected_components(graph, S):
+    visited = {s: False for s in S}
+    count = 0
+    index = check_graph_is_visited(visited)
+    while index != -1:
+        dfs(graph, index, visited)
+        count += 1
+        index = check_graph_is_visited(visited)
+    return count
+
+def check_graph_is_visited(visited):
+    for key in visited:
+        if not visited.get(key):
+            return key
+    return -1
+
+def dfs(graph, start, visited):
+    if visited.get(start) == None:
+        return
+ 
+    visited[start] = True
+    
+    for destination in graph.get(start):
+        if not visited.get(destination):
+            dfs(graph, destination, visited)
+            

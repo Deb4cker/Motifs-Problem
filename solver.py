@@ -38,7 +38,7 @@ def construction(solution, graph, verticeSet, Vc, M, degrees):
     while countColors != M:
         deltas = strategy(graph, S, verticeSet, Vc, M, countColors)
         candidates = select_candidates(deltas)
-        s = chooseSGreedy(degrees, candidates, deltas)
+        s = chooseS(candidates)
         addColor(s, countColors, Vc)
         if s not in S: S.append(s)
 
@@ -134,7 +134,7 @@ def select_candidates(deltas):
         candidates.append(list(deltas_copy[0].keys())[0])
     return candidates
 
-def chooseSGreedy(degrees, candidates, deltas):
+def chooseS(candidates):
     return random.choice(candidates)
 
 def deltaIsGreaterOrEqual(candidate, best_candidate, deltas):

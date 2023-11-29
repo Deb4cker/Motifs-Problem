@@ -18,7 +18,6 @@ def iterated_greedy(initial_vertex, graph, verticeSet, Vc, M, degrees):
         else:
             stagnation -= 1
 
-    a = count_connected_components(graph, [9, 2, 3, 4, 0, 8, 7])
     return S_incumbent, count_connected_components(graph, S_incumbent) 
 
 def destruction(solution):

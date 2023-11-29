@@ -9,7 +9,7 @@ def start(V, E, Vc, M):
   
   print()
   print("================== Solução Mataheurística ==================")
-  print("Solução ótima:", number_of_connections, "Motfis")
+  print("Solução sub-ótima:", number_of_connections, "Motfis")
   print("Vértices selecionados:")
   print(sorted(vertexes))
   

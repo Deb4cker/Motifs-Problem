@@ -2,16 +2,16 @@ import random
 
 def start(degrees, graph, verticeSet, Vc, M):
     initial_vertex = [get_greater_degree_with_desired_color(degrees, Vc, M)]
-    vertexes = iterated_greedy(initial_vertex, graph, verticeSet, Vc, M, degrees)
+    vertexes = iterated_greedy(initial_vertex, graph, verticeSet, Vc, M)
     return vertexes
 
-def iterated_greedy(initial_vertex, graph, verticeSet, Vc, M, degrees):
-    S_incumbent = construction(initial_vertex, graph, verticeSet, Vc, M, degrees)
+def iterated_greedy(initial_vertex, graph, verticeSet, Vc, M):
+    S_incumbent = construction(initial_vertex, graph, verticeSet, Vc, M)
     S = S_incumbent.copy()
     stagnation = 100
     while stagnation > 0:
         S = destruction(S)
-        S = construction(S, graph, verticeSet, Vc, M, degrees)
+        S = construction(S, graph, verticeSet, Vc, M)
         if count_connected_components(graph, S) < count_connected_components(graph, S_incumbent):
             S_incumbent = S
             stagnation = 100
@@ -31,7 +31,7 @@ def destruction(solution):
             
     return S
 
-def construction(solution, graph, verticeSet, Vc, M, degrees):
+def construction(solution, graph, verticeSet, Vc, M):
     S = solution.copy()
     countColors = generateCountColors(S, Vc)
     
